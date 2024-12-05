@@ -1,0 +1,111 @@
+<% require "dotenv"; Dotenv.load(".env") %>
+
+# Name of your application. Used to uniquely configure containers.
+service: <%= ENV['BOT_NAME'] %>
+
+# Name of the container image.
+image: dmitrytrager/<%= ENV['BOT_NAME'] %>
+
+# Deploy to these servers.
+servers:
+  web:
+    hosts:
+      - "3.76.214.98" # Lightsail Ubuntu-22
+    proxy: false
+
+# Credentials for your image host.
+registry:
+  # Specify the registry server, if you're not using Docker Hub
+  # server: registry.digitalocean.com / ghcr.io / ...
+  username: dmitrytrager
+
+  # Always use an access token rather than real password when possible.
+  password:
+    - KAMAL_REGISTRY_PASSWORD
+
+# Inject ENV variables into containers (secrets come from .env).
+# Remember to run `kamal env push` after making changes!
+env:
+  clear:
+    DOCKER_DEFAULT_PLATFORM: linux/x86_64
+    BOT_ENV: production
+    PG_HOST: 172.20.0.3 # within kamal network 172.20.0.3/16
+    POSTGRES_USER: <%= ENV['BOT_NAME'] %>
+  secret:
+    - POSTGRES_PASSWORD
+    - TELEGRAM_BOT_TOKEN
+    - OPENAI_TOKEN
+
+# Use a different ssh user than root
+ssh:
+  user: deployer
+
+# Configure builder setup.
+builder:
+  arch: amd64
+  driver: docker
+  args:
+    RUBY_VERSION: 3.3.6
+    BOT_ENV: production
+#   secrets:
+#     - GITHUB_TOKEN
+#   remote:
+#     arch: amd64
+#     host: ssh://app@192.168.0.1
+
+# Use accessory services (secrets come from .env).
+accessories:
+  db:
+    image: postgres:14.8
+    host: 3.76.214.98
+    port: 5433:5432
+    env:
+      clear:
+        POSTGRES_USER: <%= ENV['BOT_NAME'] %>
+        POSTGRES_DB: <%= ENV['BOT_NAME'] %>_production
+      secret:
+        - POSTGRES_PASSWORD
+    directories:
+      - data:/var/lib/postgresql/data
+#   redis:
+#     image: redis:7.0
+#     host: 192.168.0.2
+#     port: 6379
+#     directories:
+#       - data:/data
+
+# Configure custom arguments for Traefik
+# traefik:
+#   args:
+#     accesslog: true
+#     accesslog.format: json
+
+# Configure a custom healthcheck (default is /up on port 3000)
+# proxy:
+#   app_port: 8081
+#   healthcheck:
+#     path: /healthz
+#     timeout: 10
+#     interval: 20
+
+# Bridge fingerprinted assets, like JS and CSS, between versions to avoid
+# hitting 404 on in-flight requests. Combines all files from new and old
+# version inside the asset_path.
+# asset_path: /rails/public/assets
+
+# Configure rolling deploys by setting a wait time between batches of restarts.
+# boot:
+#   limit: 10 # Can also specify as a percentage of total hosts, such as "25%"
+#   wait: 2
+
+# Configure the role used to determine the primary_host. This host takes
+# deploy locks, runs health checks during the deploy, and follow logs, etc.
+#
+# Caution: there's no support for role renaming yet, so be careful to cleanup
+#          the previous role on the deployed hosts.
+# primary_role: web
+
+# Controls if we abort when see a role with no hosts. Disabling this may be
+# useful for more complex deploy configurations.
+#
+# allow_empty_roles: false

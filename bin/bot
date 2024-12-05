@@ -1,0 +1,35 @@
+#!/usr/bin/env ruby
+
+require "rubygems"
+require "bundler/setup"
+require "sinatra/base"
+
+require "telegram/bot"
+
+require "./lib/message_responder"
+require "./lib/app_configurator"
+
+config = AppConfigurator.new
+config.configure
+
+token = config.token
+logger = config.logger
+
+logger.debug "Starting telegram bot"
+
+begin
+  Telegram::Bot::Client.run(token) do |bot|
+    Signal.trap("INT") do
+      bot.stop
+    end
+
+    bot.listen do |message|
+      options = { bot:, message:, track: true }
+
+      logger.debug "@#{message.from.username}/#{message.from.id}: #{message.try(:text) || message.try(:message)}"
+      MessageResponder.new(options).respond
+    end
+  end
+rescue Telegram::Bot::Exceptions::ResponseError => e
+  logger.error "Telegram error: #{e}"
+end

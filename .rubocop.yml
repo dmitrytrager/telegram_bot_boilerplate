@@ -1,0 +1,87 @@
+# rubocop.yml
+
+AllCops:
+  Exclude:
+    - bin/**/*
+    - db/**/*
+    - vendor/**/*
+    - tmp/**/*
+
+Style/Documentation:
+  Enabled: false
+Style/ClassAndModuleChildren:
+  Enabled: false
+Lint/SuppressedException:
+  Enabled: false
+Naming/MethodParameterName:
+  Enabled: false
+Naming/MemoizedInstanceVariableName:
+  Enabled: false
+Naming/VariableNumber:
+  Enabled: false
+Lint/MissingSuper:
+  Enabled: false
+Lint/ConstantDefinitionInBlock:
+  Enabled: false
+
+Style/AccessModifierDeclarations:
+  Enabled: false
+Style/GuardClause:
+  MinBodyLength: 2
+Style/IfUnlessModifier:
+  Enabled: false
+Style/TrailingCommaInArguments:
+  EnforcedStyleForMultiline: consistent_comma
+Style/TrailingCommaInArrayLiteral:
+  EnforcedStyleForMultiline: consistent_comma
+Style/TrailingCommaInHashLiteral:
+  EnforcedStyleForMultiline: consistent_comma
+Style/OptionalBooleanParameter:
+  Enabled: false
+Style/SingleArgumentDig:
+  Enabled: false
+Style/RedundantFetchBlock:
+  Enabled: false
+Style/RedundantRegexpEscape:
+  Enabled: false
+Style/HashAsLastArrayItem:
+  Enabled: false
+Style/StringConcatenation:
+  Enabled: false
+Style/HashSyntax:
+  Enabled: false
+Style/StringLiterals:
+  EnforcedStyle: double_quotes
+Style/FrozenStringLiteralComment:
+  Enabled: false
+
+Metrics/BlockLength:
+  Enabled: false
+Metrics/AbcSize:
+  Max: 30
+Metrics/MethodLength:
+  Max: 20
+Metrics/ClassLength:
+  Max: 150
+
+Layout/LineLength:
+  Max: 120
+Layout/BlockAlignment:
+  EnforcedStyleAlignWith: start_of_block
+Layout/ParameterAlignment:
+  EnforcedStyle: with_fixed_indentation
+Layout/FirstHashElementIndentation:
+  EnforcedStyle: consistent
+Layout/EndAlignment:
+  EnforcedStyleAlignWith: variable
+  SupportedStylesAlignWith:
+    - keyword
+    - variable
+Layout/ArgumentAlignment:
+  EnforcedStyle: with_fixed_indentation
+Layout/MultilineMethodCallIndentation:
+  EnforcedStyle: indented
+Layout/EmptyLinesAroundAttributeAccessor:
+  Enabled: false
+Layout/HashAlignment:
+  Enabled: false

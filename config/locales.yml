@@ -1,0 +1,8 @@
+en:
+  greeting_message: "Hi! Telegram is awesome!"
+  invite_message: "Hi, what you want me to do?"
+  farewell_message: "Bye! I'll miss you :("
+ru:
+  greeting_message: "Приветики!"
+  invite_message: "Что я должен сделать?"
+  farewell_message: "Пока! Я буду скучать :("
